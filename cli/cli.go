@@ -9,7 +9,7 @@ import (
 func Run() {
 	app := cli.NewApp()
 	app.Name = "Coliseu"
-	app.Usage = "Video downloader and audio converter"
+	app.Usage = "Video downloader and audio extractor"
 	app.Version = "0.1"
 	app.Author = "Ricardo Pereira"
 	app.Email = "m@ricardopereira.eu"
