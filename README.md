@@ -12,17 +12,19 @@ Coliseu [global options] command [command options] [arguments...]
 **Examples:**
 
 ```
-coliseu youtube -d https://youtu.be/LYf7jJWJRW8
+coliseu youtube -d https://youtu.be/pZ5576Pags4
 ```
 
 ```
-coliseu youtube -d LYf7jJWJRW8
+coliseu youtube -d pZ5576Pags4
 ```
 
 ####Commands
 
 ```
 youtube, y	YouTube downloader
+  --download, -d <url or video id>   Download video
+
 help, h	Shows a list of commands or help for one command
 ```
 

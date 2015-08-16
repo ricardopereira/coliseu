@@ -8,7 +8,7 @@ import (
 	"github.com/bitrise-io/go-utils/colorstring"
 	"github.com/bitrise-io/goinp/goinp"
 	"github.com/codegangsta/cli"
-	"github.com/ricardopereira/go-get-youtube/youtube"
+	youtube "github.com/ricardopereira/coliseu-youtube"
 )
 
 var (
@@ -79,7 +79,9 @@ func doYouTube(c *cli.Context) {
 	} else if int(option) == cancel {
 		fmt.Println(colorstring.Yellowf("Cancelled"))
 	} else {
-		video.Download(int(option), video.Id+"."+video.GetExtension(int(option)))
+		video.Download(int(option), video.Id+"."+video.GetExtension(int(option)), func(readed int, transferred int) {
+			fmt.Printf("%d bytes\r", transferred)
+		})
 		fmt.Println(colorstring.Greenf("Success"))
 	}
 
