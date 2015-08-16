@@ -53,8 +53,14 @@ func doYouTube(c *cli.Context) {
 	if err != nil {
 		fmt.Println("Error:", err)
 	} else {
-		fmt.Println("Metadate:")
+		fmt.Println("Metadata:")
 		fmt.Println(" - title:", video.Title)
 		fmt.Println(" - length:", float64(video.Length_seconds)/60.0, "min")
+
+		fmt.Println(" - format:")
+		for i := 0; i < len(video.Formats); i++ {
+			format := video.Formats[i]
+			fmt.Println("    ", i, "-", format.Itag, format.Video_type, format.Quality)
+		}
 	}
 }
