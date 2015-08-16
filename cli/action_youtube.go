@@ -6,7 +6,8 @@ import (
 	"strings"
 
 	"github.com/bitrise-io/go-utils/colorstring"
-	"github.com/bitrise-io/goinp/goinp"
+	console "github.com/bitrise-io/goinp/goinp"
+	"github.com/cheggaaa/pb"
 	"github.com/codegangsta/cli"
 	youtube "github.com/ricardopereira/coliseu-youtube"
 )
@@ -74,15 +75,28 @@ func doYouTube(c *cli.Context) {
 	}
 
 	ask := "Select format to download"
-	if option, err := goinp.AskForInt(ask); err != nil {
+	if option, err := console.AskForInt(ask); err != nil {
 		fmt.Println(colorstring.Redf("Error:", err))
 	} else if int(option) == cancel {
 		fmt.Println(colorstring.Yellowf("Cancelled"))
 	} else {
-		video.Download(int(option), video.Id+"."+video.GetExtension(int(option)), func(readed int, transferred int) {
-			fmt.Printf("%d bytes\r", transferred)
+		var bar *pb.ProgressBar
+		var totalBar int
+		// Start download
+		video.Download(int(option), video.Id+"."+video.GetExtension(int(option)), func(transferred int, total int) {
+			if bar == nil {
+				bar = pb.New(total).SetUnits(pb.U_BYTES)
+				bar.Start()
+				totalBar = total
+			}
+			bar.Set(transferred)
 		})
-		fmt.Println(colorstring.Greenf("Success"))
+		// Ended
+		if bar != nil {
+			bar.Set(totalBar)
+			bar.Finish()
+		}
+		fmt.Println(colorstring.Greenf("Done"))
 	}
 
 }
