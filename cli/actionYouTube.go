@@ -73,14 +73,14 @@ func doYouTube(c *cli.Context) {
 		fmt.Println("    ", cancel, "-", "Cancel")
 	}
 
-	ask := ""
-	if value, err := goinp.AskForInt(ask); err != nil {
+	ask := "Select format to download"
+	if option, err := goinp.AskForInt(ask); err != nil {
 		fmt.Println(colorstring.Redf("Error:", err))
-		os.Exit(0)
-	} else if value == int64(cancel) {
-		fmt.Println("Canceled")
+	} else if int(option) == cancel {
+		fmt.Println(colorstring.Yellowf("Cancelled"))
 	} else {
-		fmt.Println(value)
+		video.Download(int(option), video.Id+"."+video.GetExtension(int(option)))
+		fmt.Println(colorstring.Greenf("Success"))
 	}
 
 }
