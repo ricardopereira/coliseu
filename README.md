@@ -41,7 +41,7 @@ Install or upgrade
 Run the following commands (in a bash shell):
 
 ```bash
-curl -L https://github.com/ricardopereira/coliseu/releases/download/v0.1/coliseu-x86_64 > /usr/local/bin/coliseu
+curl -L https://github.com/ricardopereira/coliseu/releases/download/v0.2/coliseu-x86_64 > /usr/local/bin/coliseu
 ```
 
 Then:
