@@ -6,31 +6,31 @@ Coliseu is a command line video downloader and audio extractor. For now, the cli
 ####Usage
 
 ```
-   Coliseu [global options] command [command options] [arguments...]
+Coliseu [global options] command [command options] [arguments...]
 ```
 
-####Examples
+**Examples:**
 
 ```
-coliseu youtube -d https://youtu.be/LYf6jJWJRW8
+coliseu youtube -d https://youtu.be/LYf7jJWJRW8
 ```
 
 ```
-coliseu youtube -d LYf6jJWJRW8
+coliseu youtube -d LYf7jJWJRW8
 ```
 
 ####Commands
 
 ```
-   youtube, y	YouTube downloader
-   help, h	Shows a list of commands or help for one command
+youtube, y	YouTube downloader
+help, h	Shows a list of commands or help for one command
 ```
 
-####Global options
+**Global options**
 
 ```
-   --help, -h		show help
-   --version, -v	print the version
+--help, -h		show help
+--version, -v	print the version
 ```
 
 Install or upgrade
