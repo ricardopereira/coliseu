@@ -2,8 +2,11 @@ package cli
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
+	"github.com/bitrise-io/go-utils/colorstring"
+	"github.com/bitrise-io/goinp/goinp"
 	"github.com/codegangsta/cli"
 	"github.com/ricardopereira/go-get-youtube/youtube"
 )
@@ -19,7 +22,7 @@ var (
 )
 
 func doYouTube(c *cli.Context) {
-	println("YouTube")
+	println(colorstring.Redf("YouTube"))
 
 	input := c.String("download")
 
@@ -47,20 +50,37 @@ func doYouTube(c *cli.Context) {
 
 	println("Video:", input)
 
+	cancel := 0
 	// Get video interface and metadata
 	video, err := youtube.Get(input)
 
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Println(colorstring.Redf("Error:", err))
+		os.Exit(0)
 	} else {
 		fmt.Println("Metadata:")
 		fmt.Println(" - title:", video.Title)
 		fmt.Println(" - length:", float64(video.Length_seconds)/60.0, "min")
 
 		fmt.Println(" - format:")
-		for i := 0; i < len(video.Formats); i++ {
+		i := 0
+		for i < len(video.Formats) {
 			format := video.Formats[i]
-			fmt.Println("    ", i, "-", format.Itag, format.Video_type, format.Quality)
+			fmt.Println("    ", i, "-", format.Quality, format.Video_type)
+			i++
 		}
+		cancel = i
+		fmt.Println("    ", cancel, "-", "Cancel")
 	}
+
+	ask := ""
+	if value, err := goinp.AskForInt(ask); err != nil {
+		fmt.Println(colorstring.Redf("Error:", err))
+		os.Exit(0)
+	} else if value == int64(cancel) {
+		fmt.Println("Canceled")
+	} else {
+		fmt.Println(value)
+	}
+
 }
