@@ -12,11 +12,13 @@ func Run() {
 	app.Usage = "Video downloader and audio extractor"
 	app.Version = "0.1"
 	app.Author = "Ricardo Pereira"
-	app.Email = "m@ricardopereira.eu"
+	app.Email = "@ricardopereiraw"
 
 	app.Action = func(c *cli.Context) {
 		println("Welcome")
 	}
+
+	app.Commands = commands
 
 	app.Run(os.Args)
 }
