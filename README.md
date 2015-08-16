@@ -15,8 +15,31 @@ Coliseu [global options] command [command options] [arguments...]
 coliseu youtube -d https://youtu.be/pZ5576Pags4
 ```
 
+or
+
 ```
 coliseu youtube -d pZ5576Pags4
+```
+
+```
+YouTube
+Argument: pZ5576Pags4
+Argument is video id
+Video: pZ5576Pags4
+Metadata:
+ - title: The World's Smallest Dog: Tiny Dog Terrier
+ - length: 0.9833333333333333 min
+ - format:
+     0 - hd720 video/mp4; codecs="avc1.64001F, mp4a.40.2"
+     1 - medium video/webm; codecs="vp8.0, vorbis"
+     2 - medium video/mp4; codecs="avc1.42001E, mp4a.40.2"
+     3 - small video/x-flv
+     4 - small video/3gpp; codecs="mp4v.20.3, mp4a.40.2"
+     5 - small video/3gpp; codecs="mp4v.20.3, mp4a.40.2"
+     6 - Cancel
+Select format to download : 4
+1.58 MB / 1.58 MB [================================================] 100.00 % 12s
+Done
 ```
 
 ####Commands
