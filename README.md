@@ -1,9 +1,8 @@
-Coliseu CLI
-----
+# Coliseu CLI
 
 Coliseu is a command line video downloader and audio extractor. For now, the client is capable of fetching YouTube video metadata and downloading videos.
 
-####Usage
+#### Usage
 
 ```
 Coliseu [global options] command [command options] [arguments...]
@@ -42,7 +41,7 @@ Select format to download : 4
 Done
 ```
 
-####Commands
+#### Commands
 
 ```
 youtube, y	YouTube downloader
