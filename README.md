@@ -26,6 +26,7 @@ Argument: pZ5576Pags4
 Argument is video id
 Video: pZ5576Pags4
 Metadata:
+ - author: Tiny Dog
  - title: The World's Smallest Dog: Tiny Dog Terrier
  - length: 0.9833333333333333 min
  - format:
@@ -46,8 +47,16 @@ Done
 ```
 youtube, y	YouTube downloader
   --download, -d <url or video id>   Download video
+  --file, -f <file path>   File with multiple video url's or video id's
 
 help, h	Shows a list of commands or help for one command
+```
+
+**File example**
+
+```
+https://youtu.be/81htD-dDdd-
+https://youtu.be/74htR_-B-HI
 ```
 
 **Global options**
@@ -63,7 +72,7 @@ Install or upgrade
 Run the following commands (in a bash shell):
 
 ```bash
-curl -L https://github.com/ricardopereira/coliseu/releases/download/v0.2/coliseu-x86_64 > /usr/local/bin/coliseu
+curl -L https://github.com/ricardopereira/coliseu/releases/download/v0.3/coliseu-x86_64 > /usr/local/bin/coliseu
 ```
 
 Then:
