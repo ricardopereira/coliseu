@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"bufio"
 
 	"github.com/bitrise-io/go-utils/colorstring"
 	console "github.com/bitrise-io/goinp/goinp"
 	"github.com/cheggaaa/pb"
 	"github.com/codegangsta/cli"
+	"github.com/kennygrant/sanitize"
 	youtube "github.com/ricardopereira/coliseu-youtube"
 )
 
@@ -19,18 +21,52 @@ var (
 			Value: "",
 			Usage: "Download a YouTube video from url or id",
 		},
+		cli.StringFlag{
+			Name:  "file, f",
+			Value: "",
+			Usage: "Download multiple YouTube videos from a file containing url's or id's",
+		},
 	}
 )
 
 func doYouTube(c *cli.Context) {
 	println(colorstring.Redf("YouTube"))
-
-	input := c.String("download")
-
-	if input != "" {
-		println("Argument:", input)
+	if downloadInput := c.String("download"); downloadInput != "" {
+		println("Download argument:", downloadInput)
+		videoDetails(downloadInput, -1)
+	} else if fileInput := c.String("file"); fileInput != "" {
+		println("File argument:", fileInput)
+		readFile(fileInput)
+	} else {
+		println("Invalid argument")
+		return
 	}
+}
 
+func downloadYouTube(video youtube.Video, option int64) {
+	var bar *pb.ProgressBar
+	var totalBar int
+	var filename = sanitize.BaseName(video.Author) + " - " + sanitize.BaseName(video.Title) + "." + video.GetExtension(int(option))
+	// Start download
+	video.Download(int(option), filename, func(transferred int, total int) {
+		if bar == nil {
+			bar = pb.New(total).SetUnits(pb.U_BYTES)
+			bar.Start()
+			totalBar = total
+		}
+		bar.Set(transferred)
+	})
+	// Ended
+	if bar != nil {
+		bar.Set(totalBar)
+		bar.Finish()
+	}
+}
+
+func videoDetails(input string, option int64) {
+	if strings.TrimSpace(input) == "" {
+		return
+	}
 	// Check if the argument is url or id
 	if strings.HasPrefix(input, "http") {
 		//"https://www.youtube.com/watch?v={id}"
@@ -60,6 +96,7 @@ func doYouTube(c *cli.Context) {
 		os.Exit(0)
 	} else {
 		fmt.Println("Metadata:")
+		fmt.Println(" - author:", video.Author)
 		fmt.Println(" - title:", video.Title)
 		fmt.Println(" - length:", float64(video.Length_seconds)/60.0, "min")
 
@@ -74,29 +111,37 @@ func doYouTube(c *cli.Context) {
 		fmt.Println("    ", cancel, "-", "Cancel")
 	}
 
+	if option != -1 {
+		downloadYouTube(video, option)
+		fmt.Println(colorstring.Greenf("Done"))
+		return
+	}
+
 	ask := "Select format to download"
 	if option, err := console.AskForInt(ask); err != nil {
 		fmt.Println(colorstring.Redf("Error:", err))
 	} else if int(option) == cancel {
 		fmt.Println(colorstring.Yellowf("Cancelled"))
 	} else {
-		var bar *pb.ProgressBar
-		var totalBar int
-		// Start download
-		video.Download(int(option), video.Id+"."+video.GetExtension(int(option)), func(transferred int, total int) {
-			if bar == nil {
-				bar = pb.New(total).SetUnits(pb.U_BYTES)
-				bar.Start()
-				totalBar = total
-			}
-			bar.Set(transferred)
-		})
-		// Ended
-		if bar != nil {
-			bar.Set(totalBar)
-			bar.Finish()
-		}
+		downloadYouTube(video, option)
 		fmt.Println(colorstring.Greenf("Done"))
 	}
+}
 
+func readFile(file string) {
+	if file, err := os.Open(file); err == nil {
+		defer file.Close()
+
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			downloadInput := scanner.Text()
+			videoDetails(downloadInput, 0)
+		}
+
+		if err = scanner.Err(); err != nil {
+			fmt.Println(colorstring.Redf("Error:", err))
+		}
+	} else {
+		fmt.Println(colorstring.Redf("Error:", err))
+	}
 }
