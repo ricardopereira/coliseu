@@ -10,7 +10,7 @@ func Run() {
 	app := cli.NewApp()
 	app.Name = "Coliseu"
 	app.Usage = "Video downloader and audio extractor"
-	app.Version = "0.2"
+	app.Version = "0.3"
 	app.Author = "Ricardo Pereira"
 	app.Email = "@ricardopereiraw"
 
